@@ -32,7 +32,14 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
-        
+
+        // Example descriptions for counties
+        var countyDescriptions = {
+            "CountyName1": "This is a description for CountyName1. Information about coastal resilience, history, and more.",
+            "CountyName2": "This is a description for CountyName2. More info on coastal protection and local environmental issues.",
+            "CountyName3": "This is a description for CountyName3. The county is known for its coastal activities and resilience efforts."
+        };
+
         $.getJSON('michigan-counties.geojson', function(data) {
             console.log("GeoJSON loaded:", data); 
             
@@ -46,11 +53,13 @@
                     },
                     click: function(e) {
                         map.fitBounds(layer.getBounds());
-                        // Log feature properties to inspect the structure
-                        console.log(feature.properties);
+                        
+                        var countyName = feature.properties.NAME;
+                        var description = countyDescriptions[countyName] || "No additional information available."; // Default message if no description
+                        
                         document.getElementById('info-box').innerHTML = `
-                            <h4>${feature.properties.NAME}</h4>
-                            <p>Coastal resilience info goes here.</p>`;
+                            <h4>${countyName}</h4>
+                            <p>${description}</p>`;
                     }
                 });
             }
@@ -67,4 +76,3 @@
     </script>
 </body>
 </html>
-
