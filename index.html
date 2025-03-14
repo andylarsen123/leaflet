@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Michigan Coastal Resilience Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map { height: 600px; }
+        #info-box {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="info-box">Click a county to see its details.</div>
+    
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
+    
+    <script>
+        var map = L.map('map').setView([44.5, -85.5], 6);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+        
+        $.getJSON('michigan-counties.geojson', function(data) {
+            function onEachFeature(feature, layer) {
+                layer.on({
+                    mouseover: function(e) {
+                        layer.setStyle({ fillOpacity: 0.7 });
+                    },
+                    mouseout: function(e) {
+                        layer.setStyle({ fillOpacity: 0.5 });
+                    },
+                    click: function(e) {
+                        map.fitBounds(layer.getBounds());
+                        document.getElementById('info-box').innerHTML = `<h4>${feature.properties.NAME}</h4><p>Coastal resilience info goes here.</p>`;
+                    }
+                });
+            }
+            
+            L.geoJSON(data, {
+                style: function(feature) {
+                    return { color: "#007BFF", weight: 1, fillOpacity: 0.5 };
+                },
+                onEachFeature: onEachFeature
+            }).addTo(map);
+        });
+    </script>
+</body>
+</html>
