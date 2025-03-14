@@ -33,7 +33,7 @@
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
         
-        $.getJSON('leaflet/michigan-counties.geojson', function(data) {
+        $.getJSON('michigan-counties.geojson', function(data) {
             function onEachFeature(feature, layer) {
                 layer.on({
                     mouseover: function(e) {
