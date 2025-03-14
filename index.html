@@ -34,7 +34,8 @@
         }).addTo(map);
         
         $.getJSON('michigan-counties.geojson', function(data) {
-                console.log("GeoJSON loaded:", data); 
+            console.log("GeoJSON loaded:", data); 
+            
             function onEachFeature(feature, layer) {
                 layer.on({
                     mouseover: function(e) {
@@ -45,7 +46,11 @@
                     },
                     click: function(e) {
                         map.fitBounds(layer.getBounds());
-                        document.getElementById('info-box').innerHTML = `<h4>${feature.properties.NAME}</h4><p>Coastal resilience info goes here.</p>`;
+                        // Log feature properties to inspect the structure
+                        console.log(feature.properties);
+                        document.getElementById('info-box').innerHTML = `
+                            <h4>${feature.properties.NAME}</h4>
+                            <p>Coastal resilience info goes here.</p>`;
                     }
                 });
             }
@@ -56,7 +61,10 @@
                 },
                 onEachFeature: onEachFeature
             }).addTo(map);
+        }).fail(function() {
+            console.error("GeoJSON file failed to load.");
         });
     </script>
 </body>
 </html>
+
