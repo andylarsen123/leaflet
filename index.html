@@ -16,6 +16,8 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0,0,0,0.3);
             max-width: 300px;
+            border: 1px solid #000;  /* Added border for testing visibility */
+            background-color: rgba(255, 255, 255, 0.8); /* Make the background visible */
         }
     </style>
 </head>
@@ -41,7 +43,7 @@
         };
 
         $.getJSON('michigan-counties.geojson', function(data) {
-            console.log("GeoJSON loaded:", data); 
+            console.log("GeoJSON loaded:", data);  // Check if the GeoJSON loads correctly
             
             function onEachFeature(feature, layer) {
                 layer.on({
@@ -55,7 +57,16 @@
                         map.fitBounds(layer.getBounds());
                         
                         var countyName = feature.properties.NAME;
-                        var description = countyDescriptions[countyName] || "No additional information available."; // Default message if no description
+                        console.log("Clicked county:", countyName);  // Log county name for debugging
+                        
+                        // Check if description exists for the clicked county
+                        var description = countyDescriptions[countyName];
+                        if (description) {
+                            console.log("Description found:", description);  // Log the description for debugging
+                        } else {
+                            console.log("No description found for this county.");
+                            description = "No additional information available.";  // Default message if no description
+                        }
                         
                         document.getElementById('info-box').innerHTML = `
                             <h4>${countyName}</h4>
