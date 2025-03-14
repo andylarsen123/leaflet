@@ -37,8 +37,8 @@
 
         // Example descriptions for counties
         var countyDescriptions = {
-            "Wayne": "This is a description for CountyName1. Information about coastal resilience, history, and more.",
-            "Washtenaw": "This is a description for CountyName2. More info on coastal protection and local environmental issues.",
+            "Wayne": "This is a description for Wayne. Information about coastal resilience, history, and more.",
+            "Washtenaw": "This is a description for Washtenaw. More info on coastal protection and local environmental issues.",
             "CountyName3": "This is a description for CountyName3. The county is known for its coastal activities and resilience efforts."
         };
 
@@ -46,6 +46,8 @@
             console.log("GeoJSON loaded:", data);  // Check if the GeoJSON loads correctly
             
             function onEachFeature(feature, layer) {
+                console.log("Feature properties:", feature.properties);  // Log feature properties to check if NAME exists
+                
                 layer.on({
                     mouseover: function(e) {
                         layer.setStyle({ fillOpacity: 0.7 });
