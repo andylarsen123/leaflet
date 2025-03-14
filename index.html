@@ -34,6 +34,7 @@
         }).addTo(map);
         
         $.getJSON('michigan-counties.geojson', function(data) {
+                console.log("GeoJSON loaded:", data); 
             function onEachFeature(feature, layer) {
                 layer.on({
                     mouseover: function(e) {
